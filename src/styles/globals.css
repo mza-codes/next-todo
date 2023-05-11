@@ -3,25 +3,47 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+    --foreground-rgb: 0, 0, 0;
+    --background-start-rgb: 214, 219, 220;
+    --background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+    :root {
+        --foreground-rgb: 255, 255, 255;
+        --background-start-rgb: 0, 0, 0;
+        --background-end-rgb: 0, 0, 0;
+    }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
+        rgb(var(--background-start-rgb));
+}
+
+/* CSS */
+
+.col {
+    @apply flex flex-col flex-wrap;
+}
+
+.row {
+    @apply flex flex-row flex-wrap;
+}
+
+.center {
+    @apply items-center justify-center;
+}
+
+.todo-item {
+    @apply flex-1 flex-grow resize-none rounded-md bg-transparent p-2 font-semibold outline-none;
+}
+
+.input-todo {
+    @apply resize-none rounded-md bg-white p-2 font-semibold outline-none shadow-md;
+}
+
+.submit {
+    @apply rounded-sm bg-green-600 px-4 py-2 text-white hover:bg-green-500 font-bold;
 }
