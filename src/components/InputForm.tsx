@@ -21,7 +21,10 @@ export default function InputForm() {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="col items-start gap-2 ml-4">
+        <form
+            onSubmit={handleSubmit}
+            className="col items-start gap-2 ml-4 overflow-hidden"
+        >
             <input
                 type="text"
                 className="input-todo text-xl min-w-[230px] sm:min-w-[340px]"
