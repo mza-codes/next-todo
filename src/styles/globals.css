@@ -41,9 +41,26 @@ body {
 }
 
 .input-todo {
-    @apply resize-none rounded-md bg-white p-2 font-semibold outline-none shadow-md;
+    @apply resize-none rounded-md bg-white p-2 font-medium outline-none shadow-md;
 }
 
 .submit {
     @apply rounded-sm bg-green-600 px-4 py-2 text-white hover:bg-green-500 font-bold;
+}
+
+.icon-button {
+    @apply bg-transparent hover:bg-gray-100/90;
+    border-radius: 50%;
+}
+
+textarea::-webkit-scrollbar {
+    display: none;
+    border-radius: 6px;
+    width: 4px;
+    background-color: rgba(0, 0, 0, 0.178);
+}
+
+textarea {
+    overflow-x: hidden;
+    scroll-padding: 12px;
 }
