@@ -16,18 +16,14 @@ export default function InputForm() {
             userId: Date.now(),
         };
 
-        arr.push(data);
-        localStorage.setItem("app-todo", JSON.stringify(arr));
+        console.log("add tod => ", data);
     };
 
     return (
-        <form
-            onSubmit={handleSubmit}
-            className="col items-start gap-2 ml-4 overflow-hidden"
-        >
+        <form onSubmit={handleSubmit} className="col gap-4 overflow-hidden">
             <input
                 type="text"
-                className="input-todo text-xl min-w-[230px] sm:min-w-[340px]"
+                className="input-todo text-lg min-w-[230px] sm:min-w-[340px]"
                 name="title"
                 placeholder="Enter Title"
             />

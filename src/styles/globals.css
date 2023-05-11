@@ -41,7 +41,7 @@ body {
 }
 
 .input-todo {
-    @apply resize-none rounded-md bg-white p-2 font-semibold outline-none shadow-md;
+    @apply resize-none rounded-md bg-white p-2 font-medium outline-none shadow-md;
 }
 
 .submit {
