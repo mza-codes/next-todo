@@ -40,14 +40,14 @@ const InitiateStore = (set: SetFunction, get: () => Store): Store => ({
     },
 });
 
-const useStore = create<Store, [["zustand/persist", Store]]>(
+const useTodoStore = create<Store, [["zustand/persist", Store]]>(
     persist((set, get) => InitiateStore(set, get), {
         name: AppCache,
         storage: createJSONStorage(() => localStorage),
     })
 );
 
-export default useStore;
+export default useTodoStore;
 
 interface Store {
     // @values

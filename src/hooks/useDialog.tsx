@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 type ContentProps = {
     msg: ReactNode;
     action: Function;
-    bg: `#${string}`;
+    bg: `${string}`;
 };
 
 const isOpenAtom = atom(false);
@@ -23,7 +23,7 @@ export default function useDialog() {
         setIsOpen,
         onOpen: () => setIsOpen(true),
         onClose: () => setIsOpen(false),
-        openWithContent: (msg: ReactNode, bg?: `#${string}`, action?: Function) => {
+        openWithContent: (msg: ReactNode, bg?: `${string}`, action?: Function) => {
             setContent((c) => ({
                 msg,
                 action: action ?? c.action,

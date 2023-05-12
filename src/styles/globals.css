@@ -48,6 +48,10 @@ body {
     @apply rounded-sm bg-green-600 px-4 py-2 text-white hover:bg-green-500 font-bold;
 }
 
+.btn-1 {
+    @apply rounded-sm px-4 py-2 font-bold;
+}
+
 .icon-button {
     @apply bg-transparent hover:bg-gray-100/90;
     border-radius: 50%;
