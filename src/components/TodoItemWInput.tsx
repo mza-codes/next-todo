@@ -2,13 +2,16 @@
 
 import useDialog from "@/hooks/useDialog";
 import { Todo } from "@/types";
-import { BiListCheck } from "react-icons/bi";
+import { BiListCheck, BiUndo } from "react-icons/bi";
 import { RiDeleteBack2Fill } from "react-icons/ri";
+import { IoArrowUndoCircleSharp } from "react-icons/io5";
+import { TbEdit } from "react-icons/tb";
 import DeleteDialog from "./Dialog/DeleteDialog";
-import { toast } from "react-hot-toast";
 import useTodoStore from "@/store/useTodoStore";
+import InputForm from "./InputForm";
+import { useCallback } from "react";
 
-const opacity = `opacity-20 hover:opacity-100 transition-opacity duration-200`;
+const opacity = `icon-button p-1 opacity-20 hover:opacity-100 transition-opacity duration-200`;
 
 const scaleTextArea = (el: HTMLTextAreaElement) => {
     el.style.height = `${el.scrollHeight + 1}px`;
@@ -17,17 +20,29 @@ const scaleTextArea = (el: HTMLTextAreaElement) => {
 export default function TodoItemWInput({ todo }: { todo: Todo }) {
     const dialog = useDialog();
     const deleteOne = useTodoStore((s) => s.removeOne);
-    const modifyTodo = useTodoStore((s) => s.updateTodo);
+    const modifyTodo = useTodoStore((s) => s.modifyTodo);
 
-    const deleteTodo = () => {
+    const deleteTodo = useCallback(() => {
         dialog.openWithContent(<DeleteDialog />, "#fff", () => {
             console.log("Delete todo => ", todo);
             deleteOne(todo);
         });
-    };
+    }, [todo]);
+
+    const editTodo = useCallback(() => {
+        dialog.openWithContent(<InputForm update editItem={todo} />, `rgb(195 195 195)`);
+    }, [todo]);
 
     return (
-        <div className="col relative bg-white rounded-md pt-4 py-12 px-2 shadow-md hover:shadow-lg overflow-hidden min-w-[200px]">
+        <div
+            className={`col relative rounded-md pt-4 py-12 px-2 shadow-md hover:shadow-lg overflow-hidden min-w-[200px] max-w-[220px] sm:max-w-[360px] capitalize flex-grow ${
+                todo.completed && !todo.deleted
+                    ? "todo-success"
+                    : todo.deleted
+                    ? "todo-deleted"
+                    : "todo-pending"
+            }`}
+        >
             {/* <input
                 value={value}
                 type="text"
@@ -44,25 +59,61 @@ export default function TodoItemWInput({ todo }: { todo: Todo }) {
                     scaleTextArea(e.currentTarget);
                 }}
             /> */}
+
             <div className="todo-item text-xl">{todo.title}</div>
             <div className="todo-item min-h-[80px]">{todo.todo}</div>
+
             <div className="absolute bottom-1 right-1 row gap-1">
-                {!todo.completed && (
+                {!todo.completed && !todo.deleted && (
                     <button
+                        title={`Mark as Complete`}
                         onClick={() => {
-                            modifyTodo({ ...todo, completed: true });
+                            modifyTodo(todo.id, { completed: true });
                         }}
-                        className={`icon-button p-1 opacity-20 ${opacity}`}
+                        className={`${opacity}`}
                     >
                         <BiListCheck size={24} color="green" />
                     </button>
                 )}
+                {todo.completed && (
+                    <button
+                        title={`Mark as Incomplete`}
+                        onClick={() => {
+                            modifyTodo(todo.id, { completed: false });
+                        }}
+                        className={`${opacity}`}
+                    >
+                        <BiUndo size={24} color="#222" />
+                    </button>
+                )}
+                {todo.deleted && (
+                    <button
+                        title={`Undo Delete`}
+                        onClick={() => {
+                            modifyTodo(todo.id, { deleted: false });
+                        }}
+                        className={`${opacity}`}
+                    >
+                        <IoArrowUndoCircleSharp size={22} color="#444" />
+                    </button>
+                )}
                 <button
-                    onClick={deleteTodo}
-                    className={`icon-button p-1 opacity-20 ${opacity}`}
+                    title={todo.deleted ? "Confirm Delete" : "Delete Item"}
+                    onClick={() => {
+                        if (todo.deleted) deleteTodo();
+                        else modifyTodo(todo.id, { deleted: true });
+                    }}
+                    className={`${opacity}`}
                 >
                     <RiDeleteBack2Fill size={20} color="red" />
                 </button>
+            </div>
+            <div className="absolute left-1 bottom-1">
+                {!todo.completed && !todo.deleted && (
+                    <button onClick={editTodo} className={`${opacity}`}>
+                        <TbEdit size={22} color="#555" />
+                    </button>
+                )}
             </div>
         </div>
     );

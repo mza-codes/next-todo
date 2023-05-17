@@ -9,69 +9,56 @@ type SetFunction = (
     replace?: boolean | undefined
 ) => void;
 
-// const InitiateStore = (set: SetFunction, get: () => Store): Store => {};
+const InitiateStore = (set: SetFunction, get: () => Store): Store => ({
+    todos: [],
+    getAllTodos() {
+        return get().todos;
+    },
+    addOne(todo) {
+        set({
+            todos: [todo, ...get().todos],
+        });
+        toast.success("One Item Added Successfully!");
+    },
+    removeOne(todo) {
+        set({
+            todos: get().todos.filter((td) => td.id !== todo.id),
+        });
+        toast.success("One Item Deleted successfully!");
+    },
+    resetStore() {
+        set({ todos: [] });
+        toast.success("All Todos Deleted!");
+    },
+    modifyTodo(id, todo) {
+        set({
+            todos: get().todos.map((td): Todo => {
+                if (td.id === id) {
+                    return {
+                        ...td,
+                        ...todo,
+                    };
+                } else return td;
+            }),
+        });
+        // toast.success("Todo Modified Successfully!");
+    },
+    updateTodo(todo) {
+        set({
+            todos: get().todos.map((td): Todo => {
+                if (td.id === todo?.id) return todo;
+                else return td;
+            }),
+        });
+        // toast.success("Todo Updated Successfully!");
+    },
+});
 
 const useTodoStore = create<Store, [["zustand/persist", Store]]>(
-    persist(
-        (set, get) => {
-            return {
-                todos: [],
-                getAllTodos() {
-                    return get().todos;
-                },
-                addOne(todo) {
-                    set({
-                        todos: [todo, ...get().todos],
-                    });
-                    toast.success("One Item Added Successfully!");
-                },
-                removeOne(todo) {
-                    set({
-                        todos: get().todos.filter((td) => td.id !== todo.id),
-                    });
-                    toast.success("One Item Deleted successfully!");
-                },
-                resetStore() {
-                    set({ todos: [] });
-                    toast.success("All Todos Deleted!");
-                },
-                modifyTodo(id, todo) {
-                    set({
-                        todos: get().todos.filter((td): Todo => {
-                            console.log(`@check () => ${td.id} === ${id}`);
-
-                            if (td.id === id) {
-                                console.log("@match () =>", { ...td, ...todo });
-
-                                return {
-                                    ...td,
-                                    ...todo,
-                                };
-                            } else return td;
-                        }),
-                    });
-                    toast.success("Todo Modified Successfully!");
-                },
-                updateTodo(todo) {
-                    set({
-                        todos: get().todos.filter((td): Todo => {
-                            console.log(`@check () => ${td.id} === ${todo?.id}`);
-
-                            if (td.id === todo?.id) {
-                                console.log("@match () =>", { ...td, ...todo });
-                                return todo;
-                            } else return td;
-                        }),
-                    });
-                    toast.success("Todo Updated Successfully!");
-                },
-            };
-        },
-        {
-            name: AppCache,
-            storage: createJSONStorage(() => localStorage),
-        }
-    )
+    persist((set, get) => InitiateStore(set, get), {
+        name: AppCache,
+        storage: createJSONStorage(() => localStorage),
+    })
 );
 
 export default useTodoStore;

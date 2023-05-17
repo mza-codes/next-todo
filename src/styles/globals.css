@@ -22,6 +22,28 @@ body {
         rgb(var(--background-start-rgb));
 }
 
+.todo-success {
+    /* background: linear-gradient(0.2turn, rgb(250, 153, 115), rgb(245, 93, 82)); */
+    /* deleted */
+
+    /* background: linear-gradient(0.7turn, rgb(255, 62, 223), rgb(255, 0, 0)); */
+    /* rose and red */
+
+    background: linear-gradient(0.1turn, rgb(41, 235, 193), rgb(110, 255, 158));
+    /* Done */
+
+    /* background: linear-gradient(0.3turn, rgb(173, 206, 255), rgb(0, 162, 255)); */
+}
+
+.todo-pending {
+    background: linear-gradient(0.7turn, rgb(255, 173, 173), rgb(255, 196, 0));
+}
+
+.todo-deleted {
+    text-decoration: line-through;
+    background: linear-gradient(0.7turn, rgb(255, 156, 238), rgb(255, 62, 62));
+}
+
 /* CSS */
 
 .col {
@@ -53,7 +75,7 @@ body {
 }
 
 .icon-button {
-    @apply bg-transparent hover:bg-gray-100/90;
+    @apply bg-transparent hover:bg-gray-100/20;
     border-radius: 50%;
 }
 
