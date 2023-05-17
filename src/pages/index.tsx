@@ -1,3 +1,4 @@
+import AddBulkTodos from "@/components/AddBulkTodos";
 import InputForm from "@/components/InputForm";
 import SettingsModal from "@/components/SettingsModal";
 import Todos from "@/components/Todos";
@@ -35,6 +36,7 @@ export default function HomePage() {
                     <button onClick={openSettings} className="icon-button p-2">
                         <RiFolderSettingsFill size={24} color="gray" />
                     </button>
+                    <AddBulkTodos />
                 </div>
             </center>
             <Todos />

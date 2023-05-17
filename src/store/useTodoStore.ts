@@ -11,6 +11,7 @@ type SetFunction = (
 
 const InitiateStore = (set: SetFunction, get: () => Store): Store => ({
     todos: [],
+    loading: false,
     getAllTodos() {
         return get().todos;
     },
@@ -52,6 +53,13 @@ const InitiateStore = (set: SetFunction, get: () => Store): Store => ({
         });
         // toast.success("Todo Updated Successfully!");
     },
+    addMany(data, end) {
+        if (end) set({ todos: [...get().todos, ...data] });
+        else set({ todos: [...data, ...get().todos] });
+    },
+    startLoading: () => set({ loading: true }),
+    stopLoading: () => set({ loading: false }),
+    setLoading: (bool) => set({ loading: bool }),
 });
 
 const useTodoStore = create<Store, [["zustand/persist", Store]]>(
@@ -66,6 +74,7 @@ export default useTodoStore;
 interface Store {
     // @values
     todos: Todo[];
+    loading: boolean;
 
     // @functions
     addOne: (todo: Todo) => void;
@@ -74,4 +83,8 @@ interface Store {
     resetStore: () => void;
     modifyTodo: (id: string, todo: Partial<Todo>) => void;
     updateTodo: (todo: Todo) => void;
+    addMany: (data: Todo[], start?: boolean) => void;
+    startLoading: () => void;
+    stopLoading: () => void;
+    setLoading: (loader: boolean) => void;
 }
