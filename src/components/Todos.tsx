@@ -1,27 +1,13 @@
 import { useState } from "react";
 import TodoItemWInput, { LoadingSkeleton } from "./TodoItemWInput";
-import { Todo } from "@/types";
 import useRunOnce from "@/hooks/useRunOnce";
+import useTodoStore from "@/store/useTodoStore";
 
 export default function Todos() {
-    const [todos, setTodos] = useState<Todo[]>([]);
+    const todos = useTodoStore((s) => s.todos);
     const [loading, setLoading] = useState(true);
 
-    useRunOnce(async () => {
-        try {
-            const data: any = await fetch(`https://dummyjson.com/todos`).then((res) =>
-                res.json()
-            );
-            await new Promise((res) => setTimeout(res, 4000));
-            console.log("RES => ", data);
-            setTodos(data?.todos ?? []);
-        } catch (e: any) {
-            console.log("fetching todos -> err =>", e);
-            setTodos([]);
-        } finally {
-            setLoading(false);
-        }
-    });
+    useRunOnce(() => setLoading(false));
 
     if (loading)
         return (
@@ -31,12 +17,20 @@ export default function Todos() {
                 ))}
             </section>
         );
-    if (!loading && todos?.length <= 0) return <h2>An Error Occurred!</h2>;
+
+    if (!loading && todos?.length <= 0)
+        return (
+            <section className="col center gap-2">
+                <h2 className="font-medium">
+                    You haven't Added any Todos, <br /> There's Nothing to Show Here
+                </h2>
+            </section>
+        );
 
     return (
-        <section className="row gap-2 ml-4 center">
+        <section className="row gap-2 ml-4 items-center justify-center">
             {todos.map((td, i) => (
-                <TodoItemWInput {...td} key={i} />
+                <TodoItemWInput todo={td} key={i} />
             ))}
         </section>
     );
