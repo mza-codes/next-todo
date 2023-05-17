@@ -2,13 +2,18 @@ import useDialog from "@/hooks/useDialog";
 import useTodoStore from "@/store/useTodoStore";
 import { Todo } from "@/types";
 import { FormEvent } from "react";
+import TodoForm from "./TodoForm";
 
 type Props = {
     editItem?: Todo;
     update?: boolean;
 };
 
-export default function InputForm({ editItem, update }: Props) {
+export default function InputFormV2(props: Props) {
+    return <TodoForm {...props} />;
+}
+
+export function InputForm({ editItem, update }: Props) {
     const addTodo = useTodoStore((s) => s.addOne);
     const updateTodo = useTodoStore((s) => s.updateTodo);
     const dialog = useDialog();

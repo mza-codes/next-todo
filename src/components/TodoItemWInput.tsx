@@ -35,7 +35,7 @@ export default function TodoItemWInput({ todo }: { todo: Todo }) {
 
     return (
         <div
-            className={`col relative rounded-md pt-4 py-12 px-2 shadow-md hover:shadow-lg overflow-hidden min-w-[200px] max-w-[220px] sm:max-w-[360px] capitalize flex-grow ${
+            className={`col relative rounded-md pt-4 py-12 px-2 shadow-md hover:shadow-lg overflow-hidden min-w-[200px] max-w-[220px] sm:max-w-[360px] capitalize flex-grow todo-card ${
                 todo.completed && !todo.deleted
                     ? "todo-success"
                     : todo.deleted

@@ -44,6 +44,10 @@ body {
     background: linear-gradient(0.7turn, rgb(255, 156, 238), rgb(255, 62, 62));
 }
 
+.todo-card {
+    transition: all 400ms ease-in-out;
+}
+
 /* CSS */
 
 .col {
@@ -89,4 +93,8 @@ textarea::-webkit-scrollbar {
 textarea {
     overflow-x: hidden;
     scroll-padding: 12px;
+}
+
+button {
+    @apply active:scale-95 transition-transform duration-300;
 }
