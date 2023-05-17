@@ -30,7 +30,7 @@ export default function Todos() {
     return (
         <section className="row gap-2 ml-4 center">
             {todos.map((td, i) => (
-                <TodoItemWInput {...td} key={i} />
+                <TodoItemWInput todo={td} key={i} />
             ))}
         </section>
     );

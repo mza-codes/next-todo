@@ -1,7 +1,6 @@
 import useTodoStore from "@/store/useTodoStore";
 import { Todo } from "@/types";
 import { FormEvent } from "react";
-import { toast } from "react-hot-toast";
 
 export default function InputForm() {
     const addTodo = useTodoStore((s) => s.addOne);
@@ -9,18 +8,21 @@ export default function InputForm() {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const form = new FormData(e.currentTarget);
+        const [title, todo] = [
+            form.get("title")?.toString() ?? "Good Lord!",
+            form.get("todo")?.toString() ?? "This is a sample description",
+        ];
 
         const data: Todo = {
-            title: form.get("title")?.toString() ?? "Good Lord!",
+            title,
             completed: false,
-            id: `${Date.now()}`,
-            todo: form.get("todo")?.toString() ?? "This is a sample description",
-            userId: Date.now(),
+            id: `${Date.now()}_T${title.slice(0, 4)}`,
+            todo,
+            userId: `${Date.now()}`,
         };
 
         addTodo(data);
-        console.log("add tod => ", data);
-        toast.success("One Item Added Successfully!");
+        console.log("add todo => ", data);
     };
 
     return (

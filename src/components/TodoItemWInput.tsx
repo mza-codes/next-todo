@@ -1,9 +1,12 @@
+"use client";
+
 import useDialog from "@/hooks/useDialog";
 import { Todo } from "@/types";
 import { BiListCheck } from "react-icons/bi";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import DeleteDialog from "./Dialog/DeleteDialog";
 import { toast } from "react-hot-toast";
+import useTodoStore from "@/store/useTodoStore";
 
 const opacity = `opacity-20 hover:opacity-100 transition-opacity duration-200`;
 
@@ -11,23 +14,26 @@ const scaleTextArea = (el: HTMLTextAreaElement) => {
     el.style.height = `${el.scrollHeight + 1}px`;
 };
 
-export default function TodoItemWInput(todo: Todo) {
+export default function TodoItemWInput({ todo }: { todo: Todo }) {
     const dialog = useDialog();
+    const deleteOne = useTodoStore((s) => s.removeOne);
+    const modifyTodo = useTodoStore((s) => s.updateTodo);
 
     const deleteTodo = () => {
         dialog.openWithContent(<DeleteDialog />, "#fff", () => {
             console.log("Delete todo => ", todo);
-            toast.success("One Item Deleted successfully!");
+            deleteOne(todo);
         });
     };
 
     return (
-        <div className="col relative bg-white rounded-md pt-4 py-12 px-2 shadow-md hover:shadow-lg overflow-hidden">
-            <input
-                defaultValue={todo?.title ?? `${todo.id} => ${todo.userId}`}
+        <div className="col relative bg-white rounded-md pt-4 py-12 px-2 shadow-md hover:shadow-lg overflow-hidden min-w-[200px]">
+            {/* <input
+                value={value}
                 type="text"
                 className="todo-item text-xl"
                 placeholder="Enter Title"
+                onChange={(e) => setValue(e.target.value)}
             />
             <textarea
                 defaultValue={todo.todo}
@@ -37,10 +43,17 @@ export default function TodoItemWInput(todo: Todo) {
                 onChange={(e) => {
                     scaleTextArea(e.currentTarget);
                 }}
-            ></textarea>
+            /> */}
+            <div className="todo-item text-xl">{todo.title}</div>
+            <div className="todo-item min-h-[80px]">{todo.todo}</div>
             <div className="absolute bottom-1 right-1 row gap-1">
                 {!todo.completed && (
-                    <button className={`icon-button p-1 opacity-20 ${opacity}`}>
+                    <button
+                        onClick={() => {
+                            modifyTodo({ ...todo, completed: true });
+                        }}
+                        className={`icon-button p-1 opacity-20 ${opacity}`}
+                    >
                         <BiListCheck size={24} color="green" />
                     </button>
                 )}
