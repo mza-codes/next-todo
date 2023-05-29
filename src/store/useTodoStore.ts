@@ -11,9 +11,7 @@ type SetFunction = (
 
 const InitiateStore = (set: SetFunction, get: () => Store): Store => ({
     todos: [],
-    getAllTodos() {
-        return get().todos;
-    },
+    loading: false,
     addOne(todo) {
         set({
             todos: [todo, ...get().todos],
@@ -52,6 +50,21 @@ const InitiateStore = (set: SetFunction, get: () => Store): Store => ({
         });
         // toast.success("Todo Updated Successfully!");
     },
+    addMany(data, end) {
+        if (end) set({ todos: [...get().todos, ...data] });
+        else set({ todos: [...data, ...get().todos] });
+    },
+    removeMany() {
+        const before = get().todos.length;
+        set({
+            todos: get().todos.filter((todo) => todo.created),
+        });
+        const after = get().todos.length;
+        toast.success(`${before - after} Todos Deleted!`);
+    },
+    startLoading: () => set({ loading: true }),
+    stopLoading: () => set({ loading: false }),
+    setLoading: (bool) => set({ loading: bool }),
 });
 
 const useTodoStore = create<Store, [["zustand/persist", Store]]>(
@@ -62,16 +75,23 @@ const useTodoStore = create<Store, [["zustand/persist", Store]]>(
 );
 
 export default useTodoStore;
+export const { removeMany, removeOne, modifyTodo, addOne, updateTodo } =
+    useTodoStore.getState();
 
 interface Store {
     // @values
     todos: Todo[];
+    loading: boolean;
 
     // @functions
     addOne: (todo: Todo) => void;
     removeOne: (todo: Todo) => void;
-    getAllTodos: () => Todo[];
     resetStore: () => void;
     modifyTodo: (id: string, todo: Partial<Todo>) => void;
     updateTodo: (todo: Todo) => void;
+    addMany: (data: Todo[], start?: boolean) => void;
+    removeMany: () => void;
+    startLoading: () => void;
+    stopLoading: () => void;
+    setLoading: (loader: boolean) => void;
 }

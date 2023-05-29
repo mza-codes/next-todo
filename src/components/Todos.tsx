@@ -2,10 +2,11 @@ import { useState } from "react";
 import TodoItemWInput, { LoadingSkeleton } from "./TodoItemWInput";
 import useRunOnce from "@/hooks/useRunOnce";
 import useTodoStore from "@/store/useTodoStore";
+import { shallow } from "zustand/shallow";
 
 export default function Todos() {
     const todos = useTodoStore((s) => s.todos);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useTodoStore((s) => [s.loading, s.setLoading], shallow);
 
     useRunOnce(() => setLoading(false));
 

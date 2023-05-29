@@ -1,3 +1,4 @@
+import AddBulkTodos from "@/components/AddBulkTodos";
 import InputForm from "@/components/InputForm";
 import SettingsModal from "@/components/SettingsModal";
 import Todos from "@/components/Todos";
@@ -22,21 +23,23 @@ export default function HomePage() {
             <Head>
                 <title>Todo - App | Home</title>
             </Head>
-            <center className="my-4 py-6 text-center w-full font-semibold text-3xl relative">
-                <span className="text-emerald-600 underline underline-offset-4">
-                    App -{" "}
-                </span>
-                <b className="text-green-500 underline underline-offset-4">Todo</b>
-
-                <div className="absolute right-2 bottom-2 row gap-1">
+            <header className="col gap-2 center text-center my-4 py-6 ">
+                <center className="font-semibold text-3xl">
+                    <span className="text-emerald-600 underline underline-offset-4">
+                        App -{" "}
+                    </span>
+                    <b className="text-green-500 underline underline-offset-4">Todo</b>
+                </center>
+                <div className="ml-auto row gap-1">
                     <button onClick={addTodoModal} className="icon-button p-2">
                         <MdFormatListBulletedAdd size={24} color="green" />
                     </button>
                     <button onClick={openSettings} className="icon-button p-2">
                         <RiFolderSettingsFill size={24} color="gray" />
                     </button>
+                    <AddBulkTodos />
                 </div>
-            </center>
+            </header>
             <Todos />
         </>
     );
