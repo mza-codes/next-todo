@@ -21,7 +21,7 @@ export default function ConfirmDialog() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0 }}
                         transition={{ duration: 0.4, easings: ["linear"] }}
-                        className="py-10 px-4 rounded-md shadow-md z-20 flex flex-col gap-4 relative items-center justify-center text-center max-w-sm"
+                        className="py-10 px-4 sm:px-8 rounded-md shadow-md z-20 flex flex-col gap-4 relative items-center justify-center text-center max-w-sm sm:max-w-md"
                     >
                         <button
                             onClick={dialog.onClose}

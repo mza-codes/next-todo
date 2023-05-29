@@ -5,4 +5,5 @@ export interface Todo {
     userId: string;
     title: string;
     deleted: boolean;
+    created: boolean;
 }

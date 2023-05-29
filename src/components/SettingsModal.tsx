@@ -1,4 +1,4 @@
-import useTodoStore from "@/store/useTodoStore";
+import useTodoStore, { removeMany } from "@/store/useTodoStore";
 
 export default function SettingsModal() {
     const { resetStore, todos } = useTodoStore();
@@ -11,6 +11,14 @@ export default function SettingsModal() {
                 Total Todos: <b>{todos.length}</b>
             </span>
             <button
+                title="Remove Todos that's not added by you"
+                onClick={removeMany}
+                className="btn-1 bg-rose-600 hover:bg-rose-700 text-white"
+            >
+                CleanUp Todos
+            </button>
+            <button
+                title="Clear all data"
                 onClick={resetStore}
                 className="btn-1 bg-red-600 hover:bg-red-700 text-white"
             >

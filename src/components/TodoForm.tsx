@@ -1,9 +1,9 @@
 import useDialog from "@/hooks/useDialog";
-import useTodoStore from "@/store/useTodoStore";
+import { addOne, updateTodo } from "@/store/useTodoStore";
 import { Todo } from "@/types";
 import { FieldError, useForm } from "react-hook-form";
-import { toast } from "react-hot-toast";
-import { z, ZodError } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 type TodoFormProps = {
     editItem?: Todo;
@@ -26,6 +26,7 @@ const formSchema = z.object({
 });
 
 export default function TodoForm({ editItem, update }: TodoFormProps) {
+    const dialog = useDialog();
     const {
         register,
         handleSubmit,
@@ -33,32 +34,13 @@ export default function TodoForm({ editItem, update }: TodoFormProps) {
         watch,
         reset,
     } = useForm<FormValues>({
-        resolver: async (values) => {
-            try {
-                const validatedValues = await formSchema.parseAsync(values);
-                return { values: validatedValues, errors: {} };
-            } catch (err: any) {
-                if (err instanceof ZodError)
-                    return { values: {}, errors: err.formErrors.fieldErrors };
-
-                toast.error("Unknown Error Occurred!");
-                return { values: {}, errors: err?.message };
-            }
-        },
-        // defaultValues: {
-        //     title: editItem?.title ?? "",
-        //     todo: editItem?.todo ?? "",
-        // },
+        resolver: zodResolver(formSchema),
     });
 
     const values = {
         title: watch("title"),
         todo: watch("todo"),
     };
-
-    const addTodo = useTodoStore((s) => s.addOne);
-    const updateTodo = useTodoStore((s) => s.updateTodo);
-    const dialog = useDialog();
 
     const createTodo = ({ title, todo }: FormValues) => {
         const data: Todo = {
@@ -68,15 +50,16 @@ export default function TodoForm({ editItem, update }: TodoFormProps) {
             todo,
             userId: `${Date.now()}`,
             deleted: false,
+            created: true,
         };
 
-        addTodo(data);
+        addOne(data);
         console.log("add todo => ", data);
     };
 
     const onSubmit = (data: FormValues) => {
         if (editItem && update) {
-            updateTodo({ ...editItem, ...data });
+            updateTodo({ ...editItem, ...data, created: true });
             dialog.onClose();
         } else createTodo(data);
         reset();
@@ -124,8 +107,7 @@ function ErrBox({ str = "", range, msg }: ErrBoxProps) {
     const [min, max] = range;
     return (
         <div className="text-xs font-medium ml-1 text-[red] inline-flex gap-2 justify-between">
-            {/* @ts-ignore */}
-            {msg?.[0]}
+            {msg?.message}
             <span
                 className={`text-xs font-medium ml-1 ${
                     str?.length > max || str?.length < min

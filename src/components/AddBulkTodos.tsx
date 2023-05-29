@@ -1,6 +1,5 @@
 import useTodoStore from "@/store/useTodoStore";
 import { Todo } from "@/types";
-import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { HiServerStack } from "react-icons/hi2";
 import { shallow } from "zustand/shallow";
@@ -18,14 +17,15 @@ export default function AddBulkTodos() {
             ).then((res) => res.json());
 
             await new Promise<Todo[]>((resolve) => {
-                const newArray = data?.map((todo) => {
+                const newArray = data?.slice(0, 80)?.map((todo) => {
                     return {
                         ...todo,
                         deleted: false,
                         todo: todo?.title,
+                        created: false,
                     };
                 });
-                resolve(newArray.slice(0, 80));
+                resolve(newArray);
             }).then((arr) => {
                 addMany(arr);
                 toast.success(`${arr.length ?? 0} Items Added Successfully!`);

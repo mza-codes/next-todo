@@ -5,9 +5,10 @@ import { Todo } from "@/types";
 import { BiListCheck, BiUndo } from "react-icons/bi";
 import { RiDeleteBack2Fill } from "react-icons/ri";
 import { IoArrowUndoCircleSharp } from "react-icons/io5";
+import { AiTwotoneDelete } from "react-icons/ai";
 import { TbEdit } from "react-icons/tb";
 import DeleteDialog from "./Dialog/DeleteDialog";
-import useTodoStore from "@/store/useTodoStore";
+import { modifyTodo, removeOne } from "@/store/useTodoStore";
 import InputForm from "./InputForm";
 import { useCallback } from "react";
 
@@ -19,13 +20,11 @@ const scaleTextArea = (el: HTMLTextAreaElement) => {
 
 export default function TodoItemWInput({ todo }: { todo: Todo }) {
     const dialog = useDialog();
-    const deleteOne = useTodoStore((s) => s.removeOne);
-    const modifyTodo = useTodoStore((s) => s.modifyTodo);
 
     const deleteTodo = useCallback(() => {
         dialog.openWithContent(<DeleteDialog />, "#fff", () => {
             console.log("Delete todo => ", todo);
-            deleteOne(todo);
+            removeOne(todo);
         });
     }, [todo]);
 
@@ -105,7 +104,11 @@ export default function TodoItemWInput({ todo }: { todo: Todo }) {
                     }}
                     className={`${opacity}`}
                 >
-                    <RiDeleteBack2Fill size={20} color="red" />
+                    {todo.deleted ? (
+                        <AiTwotoneDelete size={20} color="#666" />
+                    ) : (
+                        <RiDeleteBack2Fill size={20} color="red" />
+                    )}
                 </button>
             </div>
             <div className="absolute left-1 bottom-1">

@@ -13,7 +13,8 @@ export default function InputFormV2(props: Props) {
     return <TodoForm {...props} />;
 }
 
-export function InputForm({ editItem, update }: Props) {
+// @OLD
+function InputForm({ editItem, update }: Props) {
     const addTodo = useTodoStore((s) => s.addOne);
     const updateTodo = useTodoStore((s) => s.updateTodo);
     const dialog = useDialog();
@@ -26,6 +27,7 @@ export function InputForm({ editItem, update }: Props) {
             todo,
             userId: `${Date.now()}`,
             deleted: false,
+            created: true,
         };
 
         addTodo(data);
