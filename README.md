@@ -12,6 +12,8 @@ yarn dev
 pnpm dev
 ```
 
+![image](https://github.com/mza-codes/next-todo/assets/106687236/00124a6c-2222-4172-bda8-666daed8b552)
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
